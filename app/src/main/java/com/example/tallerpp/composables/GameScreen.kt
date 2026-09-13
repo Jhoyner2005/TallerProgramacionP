@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -24,347 +25,203 @@ import androidx.compose.ui.unit.sp
 import com.example.tallerpp.R
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
 import kotlin.math.sqrt
 
 @Composable
 fun GameScreen(
     onBack: () -> Unit
 ) {
-
     val context = LocalContext.current
 
-    var gyroX by remember { mutableFloatStateOf(0f) }
-    var gyroY by remember { mutableFloatStateOf(0f) }
-    var gyroZ by remember { mutableFloatStateOf(0f) }
-
-    var accelX by remember { mutableFloatStateOf(0f) }
-    var accelY by remember { mutableFloatStateOf(0f) }
-    var accelZ by remember { mutableFloatStateOf(0f) }
+    var aimAngle by remember { mutableFloatStateOf(0f) }
+    var isMoving by remember { mutableStateOf(false) }
+    var strokeCount by remember { mutableIntStateOf(0) }
 
     val sensorManager = remember {
         context.getSystemService(SensorManager::class.java)
     }
 
+    var ballX by remember { mutableFloatStateOf(0f) }
+    var ballY by remember { mutableFloatStateOf(0f) }
+    var ballVelX by remember { mutableFloatStateOf(0f) }
+    var ballVelY by remember { mutableFloatStateOf(0f) }
+
+    var canvasWidth by remember { mutableFloatStateOf(0f) }
+    var canvasHeight by remember { mutableFloatStateOf(0f) }
+    var isInitialized by remember { mutableStateOf(false) }
+    var hasWon by remember { mutableStateOf(false) }
+
+    val ballRadius = 30f
+    val holeRadius = 50f
+
     DisposableEffect(sensorManager) {
-
         val listener = object : SensorEventListener {
-
             override fun onSensorChanged(event: SensorEvent) {
+                if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
+                    val ax = event.values[0]
+                    val ay = event.values[1]
+                    val az = event.values[2]
 
-                when (event.sensor.type) {
-
-                    Sensor.TYPE_GYROSCOPE -> {
-                        gyroX = event.values[0]
-                        gyroY = event.values[1]
-                        gyroZ = event.values[2]
+                    if (!isMoving && !hasWon) {
+                        val tiltMagnitude = sqrt(ax * ax + ay * ay)
+                        if (tiltMagnitude > 1.5f) {
+                            aimAngle = atan2(ay.toDouble(), -ax.toDouble()).toFloat()
+                        }
                     }
 
-                    Sensor.TYPE_ACCELEROMETER -> {
-                        accelX = event.values[0]
-                        accelY = event.values[1]
-                        accelZ = event.values[2]
+                    val magnitude = sqrt(ax * ax + ay * ay + az * az)
+                    if (magnitude > 16f && !isMoving && !hasWon) {
+                        val force = magnitude - 9.81f
+
+                        ballVelX = cos(aimAngle.toDouble()).toFloat() * force * 2.2f
+                        ballVelY = sin(aimAngle.toDouble()).toFloat() * force * 2.2f
+
+                        isMoving = true
+                        strokeCount++
                     }
                 }
             }
 
-            override fun onAccuracyChanged(
-                sensor: Sensor?,
-                accuracy: Int
-            ) {
-            }
+            override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {}
         }
 
-        sensorManager.registerListener(
-            listener,
-            sensorManager.getDefaultSensor(
-                Sensor.TYPE_GYROSCOPE
-            ),
-            SensorManager.SENSOR_DELAY_GAME
-        )
-
-        sensorManager.registerListener(
-            listener,
-            sensorManager.getDefaultSensor(
-                Sensor.TYPE_ACCELEROMETER
-            ),
-            SensorManager.SENSOR_DELAY_GAME
-        )
+        val accelSensor = sensorManager?.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
+        sensorManager?.registerListener(listener, accelSensor, SensorManager.SENSOR_DELAY_GAME)
 
         onDispose {
-            sensorManager.unregisterListener(listener)
+            sensorManager?.unregisterListener(listener)
         }
     }
-    var playerX by remember {
-        mutableFloatStateOf(0f)
-    }
-
-    LaunchedEffect(accelX) {
-        playerX += -accelX * 5f
-    }
-
-    var ballX by remember {
-        mutableFloatStateOf(0f)
-    }
-
-    var ballY by remember {
-        mutableFloatStateOf(0f)
-    }
-
-    var ballVelocityX by remember {
-        mutableFloatStateOf(0f)
-    }
-
-    var ballVelocityY by remember {
-        mutableFloatStateOf(0f)
-    }
-
-    var canvasWidth by remember {
-        mutableFloatStateOf(0f)
-    }
-
-    var canvasHeight by remember {
-        mutableFloatStateOf(0f)
-    }
-
-    var ballInitialized by remember {
-        mutableStateOf(false)
-    }
-
     LaunchedEffect(Unit) {
         while (isActive) {
             if (canvasWidth > 0f && canvasHeight > 0f) {
-                if (!ballInitialized) {
-
+                if (!isInitialized) {
                     ballX = canvasWidth / 2f
-                    ballY = canvasHeight / 2f
-
-                    ballVelocityX = 0f
-                    ballVelocityY = 7f
-
-                    ballInitialized = true
+                    ballY = canvasHeight - 200f
+                    isInitialized = true
                 }
 
-                ballX += ballVelocityX
-                ballY += ballVelocityY
+                if (isMoving && !hasWon) {
+                    ballX += ballVelX
+                    ballY += ballVelY
+                    ballVelX *= 0.95f
+                    ballVelY *= 0.95f
 
-                val ballRadius = 60f
-                val playerRadius = 80f
+                    // Rebotes en paredes
+                    if (ballX - ballRadius <= 0f) {
+                        ballX = ballRadius
+                        ballVelX = -ballVelX * 0.5f
+                    }
+                    if (ballX + ballRadius >= canvasWidth) {
+                        ballX = canvasWidth - ballRadius
+                        ballVelX = -ballVelX * 0.5f
+                    }
+                    if (ballY - ballRadius <= 0f) {
+                        ballY = ballRadius
+                        ballVelY = -ballVelY * 0.5f
+                    }
+                    if (ballY + ballRadius >= canvasHeight) {
+                        ballY = canvasHeight - ballRadius
+                        ballVelY = -ballVelY * 0.5f
+                    }
 
-                val playerY = canvasHeight - 180f
+                    // cambio de velocidad
+                    val currentSpeed = sqrt(ballVelX * ballVelX + ballVelY * ballVelY)
+                    if (currentSpeed < 0.2f) {
+                        ballVelX = 0f
+                        ballVelY = 0f
+                        isMoving = false
+                    }
 
-                val playerXLimitado = playerX.coerceIn(
-                    100f,
-                    canvasWidth - 100f
-                )
+                    // Detectar entrada al Hoyo
+                    val holeX = canvasWidth / 2f
+                    val holeY = 250f
+                    val dx = ballX - holeX
+                    val dy = ballY - holeY
+                    val distance = sqrt(dx * dx + dy * dy)
 
-                if (ballX - ballRadius <= 0f) {
-                    ballX = ballRadius
-                    ballVelocityX = -ballVelocityX
-                }
-
-                if (ballX + ballRadius >= canvasWidth) {
-                    ballX = canvasWidth - ballRadius
-                    ballVelocityX = -ballVelocityX
-                }
-
-                if (ballY - ballRadius <= 0f) {
-                    onBack()
-                }
-
-                val distanciaJugador = sqrt(
-                    (ballX - playerXLimitado) *
-                            (ballX - playerXLimitado) +
-                            (ballY - playerY) *
-                            (ballY - playerY)
-                )
-
-                if (distanciaJugador <= ballRadius + playerRadius && ballVelocityY > 0f) {
-                    ballY =
-                        playerY -
-                                playerRadius -
-                                ballRadius
-                    ballVelocityY = -ballVelocityY
-
-                    val diferenciaX =
-                        ballX - playerXLimitado
-
-                    ballVelocityX =
-                        (diferenciaX * 0.08f)
-                            .coerceIn(-8f, 8f)
-                }
-
-                val enemyY = 180f
-                val enemyX = canvasWidth / 2f
-
-                val distanciaEnemigo = sqrt(
-                    (ballX - enemyX) *
-                            (ballX - enemyX) +
-                            (ballY - enemyY) *
-                            (ballY - enemyY)
-                )
-
-                if (distanciaEnemigo <= ballRadius + playerRadius && ballVelocityY < 0f) {
-
-                    ballY = enemyY + playerRadius + ballRadius
-
-                    ballVelocityY = -ballVelocityY
-
-                    val diferenciaX =
-                        ballX - enemyX
-
-                    ballVelocityX =
-                        (diferenciaX * 0.08f)
-                            .coerceIn(-8f, 8f)
-                }
-
-                if (ballY + ballRadius >= canvasHeight) {
-                    onBack()
+                    if (distance < (holeRadius - 10f) && currentSpeed < 8f) {
+                        hasWon = true
+                        ballX = holeX
+                        ballY = holeY
+                        ballVelX = 0f
+                        ballVelY = 0f
+                        isMoving = false
+                    }
                 }
             }
-
-            delay(5L)
+            delay(16L)
         }
     }
 
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-
-        Canvas(
-            modifier = Modifier.fillMaxSize()
-        ) {
-
+    Box(modifier = Modifier.fillMaxSize()) {
+        Canvas(modifier = Modifier.fillMaxSize()) {
             canvasWidth = size.width
             canvasHeight = size.height
 
-            val centroX = size.width / 2f
+            val holeX = size.width / 2f
+            val holeY = 250f
 
-            val playerY = size.height - 180f
+            // Campo de Golf
+            drawRect(color = Color(0xFF2E7D32), size = size)
 
-            val playerXLimitado = playerX.coerceIn(
-                100f,
-                size.width - 100f
-            )
+            // Hoyo
+            drawCircle(color = Color.Black, radius = holeRadius, center = Offset(holeX, holeY))
 
-            drawRect(
-                color = Color(0xFF3498DB),
-                topLeft = Offset.Zero,
-                size = size
-            )
+            if (isInitialized) {
+                if (!isMoving && !hasWon) {
+                    val lineLength = 130f
+                    val endX = ballX + cos(aimAngle.toDouble()).toFloat() * lineLength
+                    val endY = ballY + sin(aimAngle.toDouble()).toFloat() * lineLength
 
-            drawCircle(
-                color = Color(0xFFE74C3C),
-                radius = 80f,
-                center = Offset(
-                    playerXLimitado,
-                    playerY
-                )
-            )
+                    drawLine(
+                        color = Color.Yellow,
+                        start = Offset(ballX, ballY),
+                        end = Offset(endX, endY),
+                        strokeWidth = 6f,
+                        cap = StrokeCap.Round
+                    )
+                }
 
-            drawCircle(
-                color = Color(0xFFC0392B),
-                radius = 80f,
-                center = Offset(
-                    playerXLimitado,
-                    playerY
-                ),
-                style = Stroke(width = 8f)
-            )
-
-            drawCircle(
-                color = Color.Black,
-                radius = 60f,
-                center = Offset(
-                    ballX,
-                    ballY
-                )
-            )
-
-            drawCircle(
-                color = Color(0xFF212121),
-                radius = 48f,
-                center = Offset(
-                    ballX,
-                    ballY
-                )
-            )
-
-            val enemyY = 180f
-
-            drawCircle(
-                color = Color(0xFF2ECC71),
-                radius = 80f,
-                center = Offset(
-                    centroX,
-                    enemyY
-                )
-            )
-
-            drawCircle(
-                color = Color(0xFF27AE60),
-                radius = 80f,
-                center = Offset(
-                    centroX,
-                    enemyY
-                ),
-                style = Stroke(width = 8f)
-            )
+                // Pelota
+                drawCircle(color = Color.White, radius = ballRadius, center = Offset(ballX, ballY))
+            }
         }
 
-        Text(
-            text = """
-                GIROSCOPIO
-                
-                X: %.2f
-                Y: %.2f
-                Z: %.2f
-                
-                ACELERÓMETRO
-                
-                X: %.2f
-                Y: %.2f
-                Z: %.2f
-            """.trimIndent().format(
-                gyroX,
-                gyroY,
-                gyroZ,
-                accelX,
-                accelY,
-                accelZ
-            ),
-            modifier = Modifier.align(
-                Alignment.TopStart
-            ),
-            color = Color.White,
-            fontSize = 16.sp
-        )
+        Column(
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(16.dp),
+            horizontalAlignment = Alignment.End
+        ) {
+            Text(text = "Tiros: $strokeCount", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
+
+        }
 
         Button(
-            onClick = {
-                onBack()
-            },
+            onClick = { onBack() },
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .padding(16.dp)
-                .width(120.dp)
-                .height(48.dp)
-                .shadow(
-                    10.dp,
-                    RoundedCornerShape(18.dp)
-                ),
-            shape = RoundedCornerShape(18.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF00AEFF)
-            )
+                .width(110.dp)
+                .height(44.dp)
+                .shadow(8.dp, RoundedCornerShape(14.dp)),
+            shape = RoundedCornerShape(14.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00AEFF))
         ) {
+            Text(text = stringResource(R.string.home_btn_back), fontSize = 14.sp, color = Color.White)
+        }
 
+        if (hasWon) {
             Text(
-                text = stringResource(
-                    R.string.home_btn_back
-                ),
-                fontSize = 16.sp,
+                text = "¡HOLE IN ONE! ⛳\nEn $strokeCount tiros",
+                color = Color.Yellow,
+                fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.White
+                modifier = Modifier.align(Alignment.Center)
             )
         }
     }
