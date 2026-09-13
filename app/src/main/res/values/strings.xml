@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">TallerPP</string>
+
+    <string name="home_title">Welcome to Golf Game</string>
+    <string name="home_btn_play">Play</string>
+    <string name="home_score">Your last score is</string>
+    <string name="home_btn_back">Back</string>
+</resources>
