@@ -25,11 +25,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun HomeScreen(
-    bestScore: Int,
-    onClickGame: () -> Unit,
-    onClickInstruction: () -> Unit
-) {
+    fun HomeScreen(
+        bestScore: Int,
+        onClickGame: () -> Unit,
+        onClickInstruction: () -> Unit
+    ) {
 
     Box(
         modifier = Modifier

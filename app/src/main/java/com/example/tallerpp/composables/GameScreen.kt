@@ -35,7 +35,8 @@ import kotlin.math.sqrt
 
 @Composable
 fun GameScreen(
-    onBack: (Int) -> Unit
+    onBack: (Int) -> Unit,
+    onNewBestScore: (Int) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -344,6 +345,8 @@ fun GameScreen(
 
                         Button(
                             onClick = {
+                                onNewBestScore(strokeCount)
+
                                 strokeCount = 0
                                 hasWon = false
                                 isMoving = false
@@ -361,6 +364,25 @@ fun GameScreen(
                             Text(
                                 text = "PLAY AGAIN",
                                 fontSize = 17.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        Button(
+                            onClick = {
+                                onBack(strokeCount)
+                            },
+                            shape = RoundedCornerShape(14.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFF4CAF50)
+                            )
+                        ) {
+                            Text(
+                                text = "BACK TO HOME",
+                                fontSize = 16.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White
                             )

@@ -32,12 +32,20 @@ class MainActivity : ComponentActivity() {
                             onClickGame = { currentScreen = TypeScreen.GAME }
                         )
                     } else if (currentScreen == TypeScreen.GAME) {
-                        GameScreen { score ->
-                            if (bestScore == 0 || score < bestScore) {
-                                bestScore = score
+                        GameScreen(
+                            onBack = { score ->
+                                if (bestScore == 0 || score < bestScore) {
+                                    bestScore = score
+                                }
+
+                                currentScreen = TypeScreen.HOME
+                            },
+                            onNewBestScore = { score ->
+                                if (bestScore == 0 || score < bestScore) {
+                                    bestScore = score
+                                }
                             }
-                            currentScreen = TypeScreen.HOME
-                        }
+                        )
                     } else if (currentScreen == TypeScreen.INSTRUCTION) {
                         InstructionScreen {
                             currentScreen = TypeScreen.HOME
