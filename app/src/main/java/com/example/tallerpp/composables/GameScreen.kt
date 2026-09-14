@@ -216,13 +216,45 @@ fun GameScreen(
         }
 
         if (hasWon) {
-            Text(
-                text = "¡HOLE IN ONE! ⛳\nIn $strokeCount shots",
-                color = Color.Yellow,
-                fontSize = 28.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.align(Alignment.Center)
-            )
+            Column(
+                modifier = Modifier.align(Alignment.Center),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "¡HOLE IN ONE! \nIn $strokeCount Shots",
+                    color = Color.White,
+                    fontSize = 28.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Button(
+                    onClick = {
+                        // restart game Button
+                        strokeCount = 0
+                        hasWon = false
+                        isMoving = false
+
+                        ballVelX = 0f
+                        ballVelY = 0f
+
+                        isInitialized = false
+                    },
+                    shape = RoundedCornerShape(14.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Blue
+                    )
+                ) {
+                    Text(
+                        text = "Restart",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                }
+            }
         }
+
     }
 }
