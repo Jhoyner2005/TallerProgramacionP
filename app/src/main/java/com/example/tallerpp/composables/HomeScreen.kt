@@ -1,8 +1,7 @@
-
 package com.example.tallerpp.composables
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,13 +18,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.example.tallerpp.R
 
 @Composable
 fun HomeScreen(
@@ -37,16 +34,65 @@ fun HomeScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFB9E6A3))
+            .background(Color(0xFF87CEEB))
     ) {
 
-        // Darling
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(230.dp)
-                .background(Color(0xFF87CEEB))
-        )
+        // Clouds
+        Canvas(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            // Left cloud
+            drawCircle(
+                color = Color.White.copy(alpha = 0.9f),
+                radius = 28f,
+                center = Offset(
+                    size.width * 0.15f,
+                    size.height * 0.12f
+                )
+            )
+            drawCircle(
+                color = Color.White.copy(alpha = 0.9f),
+                radius = 38f,
+                center = Offset(
+                    size.width * 0.22f,
+                    size.height * 0.11f
+                )
+            )
+            drawCircle(
+                color = Color.White.copy(alpha = 0.9f),
+                radius = 26f,
+                center = Offset(
+                    size.width * 0.29f,
+                    size.height * 0.13f
+                )
+            )
+            // Right Cloud
+            drawCircle(
+                color = Color.White.copy(alpha = 0.85f),
+                radius = 26f,
+                center = Offset(
+                    size.width * 0.72f,
+                    size.height * 0.09f
+                )
+            )
+            drawCircle(
+                color = Color.White.copy(alpha = 0.85f),
+                radius = 36f,
+                center = Offset(
+                    size.width * 0.79f,
+                    size.height * 0.08f
+                )
+            )
+
+            drawCircle(
+                color = Color.White.copy(alpha = 0.85f),
+                radius = 25f,
+                center = Offset(
+                    size.width * 0.86f,
+                    size.height * 0.11f
+                )
+            )
+        }
 
         // Golf course
         Box(
@@ -63,6 +109,18 @@ fun HomeScreen(
                 .background(Color(0xFF4CAF50))
         )
 
+        // Flag
+        Icon(
+            imageVector = Icons.Default.Flag,
+            contentDescription = "Golf flag",
+            tint = Color(0xFFE53935),
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .offset(x = 30.dp, y = (-80).dp)
+                .padding(top = 200.dp)
+                .size(100.dp)
+        )
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -75,30 +133,20 @@ fun HomeScreen(
             Text(
                 text = "GOLF",
                 color = Color.White,
-                fontSize = 42.sp,
+                fontSize = 60.sp,
                 fontWeight = FontWeight.ExtraBold
             )
 
             Text(
                 text = "MASTER",
                 color = Color(0xFFFFD54F),
-                fontSize = 28.sp,
+                fontSize = 40.sp,
                 fontWeight = FontWeight.Bold
             )
 
-            Spacer(modifier = Modifier.height(14.dp))
+            Spacer(modifier = Modifier.height(40.dp))
 
-            // Flags
-            Icon(
-                imageVector = Icons.Default.Flag,
-                contentDescription = "Golf flag",
-                tint = Color(0xFF1565C0),
-                modifier = Modifier.size(65.dp)
-            )
-
-            Spacer(modifier = Modifier.height(18.dp))
-
-            // Statistical card
+            // statical Card
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(22.dp),
@@ -130,7 +178,7 @@ fun HomeScreen(
 
                         Text(
                             text = "BEST SCORE",
-                            fontSize = 12.sp,
+                            fontSize = 20.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color(0xFF555555)
                         )
@@ -157,7 +205,7 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(18.dp))
 
-            // main Button
+            // Main button
             Button(
                 onClick = onClickGame,
                 modifier = Modifier
@@ -184,26 +232,6 @@ fun HomeScreen(
                 color = Color.White.copy(alpha = 0.8f),
                 fontSize = 12.sp
             )
-
-            Button(
-                onClick = onClickInstruction,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-                    .shadow(6.dp, RoundedCornerShape(18.dp)),
-                shape = RoundedCornerShape(18.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.White.copy(alpha = 0.2f)
-                )
-            ){
-                Text(
-                    text = "Instructions",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White
-                )
-            }
         }
     }
 }
-
