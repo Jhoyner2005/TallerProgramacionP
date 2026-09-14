@@ -166,6 +166,20 @@ fun GameScreen(
                         ballVelY = -ballVelY
                     }
 
+                    // Bounce off rock
+                    val rockX = canvasWidth / 2f
+                    val rockY = canvasHeight * 0.65f
+                    val rockRadius = 80f
+
+                    val dxRock = ballX - rockX
+                    val dyRock = ballY - rockY
+                    val distanceRock = sqrt(dxRock * dxRock + dyRock * dyRock)
+
+                    if (distanceRock < ballRadius + rockRadius) {
+                        ballVelX = -ballVelX
+                        ballVelY = -ballVelY
+                    }
+
                     // speed change
                     val currentSpeed = sqrt(ballVelX * ballVelX + ballVelY * ballVelY)
                     if (currentSpeed < 0.2f) {
@@ -255,7 +269,7 @@ fun GameScreen(
                 // p stone
                 drawCircle(
                     color = Color(0xFF757575),
-                    radius = 55f,
+                    radius = 80f,
                     center = Offset(size.width / 2f, size.height * 0.65f
                     )
                 )
