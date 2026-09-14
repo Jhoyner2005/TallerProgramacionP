@@ -36,7 +36,7 @@ fun HomeScreen(
             .background(Color(0xFFB9E6A3))
     ) {
 
-        // Cielo
+        // Darling
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -44,7 +44,7 @@ fun HomeScreen(
                 .background(Color(0xFF87CEEB))
         )
 
-        // Campo de golf
+        // Golf course
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -62,8 +62,9 @@ fun HomeScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 24.dp, vertical = 30.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(horizontal = 24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
 
             // Tittle
@@ -81,20 +82,19 @@ fun HomeScreen(
                 fontWeight = FontWeight.Bold
             )
 
-            Spacer(modifier = Modifier.height(18.dp))
+            Spacer(modifier = Modifier.height(14.dp))
 
-            // Bandera
+            // Flags
             Icon(
                 imageVector = Icons.Default.Flag,
-                contentDescription = null,
-                tint = Color.White,
-                modifier = Modifier.size(70.dp)
+                contentDescription = "Golf flag",
+                tint = Color(0xFF1565C0),
+                modifier = Modifier.size(65.dp)
             )
 
+            Spacer(modifier = Modifier.height(18.dp))
 
-            Spacer(modifier = Modifier.height(25.dp))
-
-            // Tarjeta de estadísticas
+            // Statistical card
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(22.dp),
@@ -107,7 +107,7 @@ fun HomeScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(20.dp),
-                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
@@ -118,8 +118,11 @@ fun HomeScreen(
                         Icon(
                             imageVector = Icons.Default.Star,
                             contentDescription = null,
-                            tint = Color(0xFFFFB300)
+                            tint = Color(0xFFFFB300),
+                            modifier = Modifier.size(28.dp)
                         )
+
+                        Spacer(modifier = Modifier.height(4.dp))
 
                         Text(
                             text = "BEST SCORE",
@@ -135,32 +138,27 @@ fun HomeScreen(
                             color = Color(0xFF176B3A)
                         )
                     }
-
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                    }
                 }
             }
 
-            Spacer(modifier = Modifier.height(28.dp))
+            Spacer(modifier = Modifier.height(22.dp))
 
-            // Pelota de golf
+            // Golf ball
             Box(
                 modifier = Modifier
-                    .size(48.dp)
+                    .size(42.dp)
                     .clip(CircleShape)
                     .background(Color.White)
             )
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(18.dp))
 
-            // Botón principal
+            // main Button
             Button(
                 onClick = onClickGame,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(62.dp),
+                    .height(60.dp),
                 shape = RoundedCornerShape(30.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFFFFC107)
@@ -175,7 +173,7 @@ fun HomeScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             Text(
                 text = "Golf Game • 2026",
