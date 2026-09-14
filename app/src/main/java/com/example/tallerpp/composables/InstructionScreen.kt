@@ -114,8 +114,6 @@ fun InstructionScreen(
                 .background(Color(0xFF4CAF50))
         )
 
-
-
         //  tittle
         Column(
             modifier = Modifier
@@ -164,7 +162,7 @@ fun InstructionScreen(
 
                 Text(
                     text = "¿How do you play?",
-                    fontSize = 26.sp,
+                    fontSize = 28.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFF1E3A8A)
                 )
@@ -173,46 +171,46 @@ fun InstructionScreen(
 
                 Text(
                     text = "¡point!",
-                    fontSize = 20.sp,
+                    fontSize = 22.sp,
                     fontWeight = FontWeight.Bold
                 )
 
                 Text(
                     text = "Tilt your phone to choose the shot direction.",
-                    fontSize = 15.sp
+                    fontSize = 17.sp
                 )
 
                 Spacer(modifier = Modifier.height(14.dp))
 
                 Text(
                     text = "¡lance!",
-                    fontSize = 20.sp,
+                    fontSize = 22.sp,
                     fontWeight = FontWeight.Bold
                 )
 
                 Text(
                     text = "Make a forward motion with the phone to throw the ball",
-                    fontSize = 15.sp
+                    fontSize = 17.sp
                 )
 
                 Spacer(modifier = Modifier.height(14.dp))
 
                 Text(
                     text = "¡Make a hole in one!",
-                    fontSize = 20.sp,
+                    fontSize = 22.sp,
                     fontWeight = FontWeight.Bold
                 )
 
                 Text(
                     text = "Try to get the ball in the hole using the fewest shots.",
-                    fontSize = 15.sp
+                    fontSize = 17.sp
                 )
 
                 Spacer(modifier = Modifier.height(14.dp))
 
                 Text(
                     text = "Be careful of obstacles.",
-                    fontSize = 18.sp,
+                    fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
 
@@ -220,14 +218,13 @@ fun InstructionScreen(
 
                 Text(
                     text = "¡Good luck!",
-                    fontSize = 20.sp,
+                    fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color(0xFF1E3A8A)
                 )
             }
-
-
         }
+
         // back button
         Button(
             onClick = onBack,
@@ -250,6 +247,5 @@ fun InstructionScreen(
             )
         }
     }
-
 }
 
