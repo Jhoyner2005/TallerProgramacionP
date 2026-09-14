@@ -1,4 +1,5 @@
 package com.example.tallerpp.composables
+
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -186,6 +187,7 @@ fun GameScreen(
         }
     }
 
+
     Box(modifier = Modifier.fillMaxSize()) {
         Canvas(modifier = Modifier.fillMaxSize()) {
             canvasWidth = size.width
@@ -302,47 +304,71 @@ fun GameScreen(
         ) {
             Text(text = stringResource(R.string.home_btn_back), fontSize = 14.sp, color = Color.White)
         }
-
         if (hasWon) {
-            Column(
-                modifier = Modifier.align(Alignment.Center),
-                horizontalAlignment = Alignment.CenterHorizontally
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = "¡HOLE IN ONE! \nIn $strokeCount Shots",
-                    color = Color.White,
-                    fontSize = 28.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                Button(
-                    onClick = {
-                        // restart game Button
-                        strokeCount = 0
-                        hasWon = false
-                        isMoving = false
-
-                        ballVelX = 0f
-                        ballVelY = 0f
-
-                        isInitialized = false
-                    },
-                    shape = RoundedCornerShape(14.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color.Blue
+                Card(
+                    modifier = Modifier.padding(24.dp),
+                    shape = RoundedCornerShape(24.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = Color.Black.copy(alpha = 0.75f)
                     )
                 ) {
-                    Text(
-                        text = "Restart",
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White
-                    )
+                    Column(
+                        modifier = Modifier.padding(
+                            horizontal = 40.dp,
+                            vertical = 35.dp
+                        ),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+
+                        Text(
+                            text = "GREAT!",
+                            color = Color(0xFFFFD54F),
+                            fontSize = 34.sp,
+                            fontWeight = FontWeight.ExtraBold
+                        )
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        Text(
+                            text = "$strokeCount Shots",
+                            color = Color.White,
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+
+                        Spacer(modifier = Modifier.height(25.dp))
+
+                        Button(
+                            onClick = {
+                                strokeCount = 0
+                                hasWon = false
+                                isMoving = false
+
+                                ballVelX = 0f
+                                ballVelY = 0f
+
+                                isInitialized = false
+                            },
+                            shape = RoundedCornerShape(14.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFF1565C0)
+                            )
+                        ) {
+                            Text(
+                                text = "PLAY AGAIN",
+                                fontSize = 17.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White
+                            )
+                        }
+                    }
                 }
             }
         }
+        }
 
     }
-}
