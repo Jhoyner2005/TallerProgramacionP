@@ -15,38 +15,55 @@ import com.example.tallerpp.enums.TypeScreen
 import com.example.tallerpp.composables.InstructionScreen
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         setContent {
             TallerPPTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
 
-                    var currentScreen by remember { mutableStateOf(TypeScreen.HOME) }
-                    var bestScore by remember { mutableStateOf(0) }
+                Scaffold(
+                    modifier = Modifier.fillMaxSize()
+                ) { innerPadding ->
+
+                    var currentScreen by remember {
+                        mutableStateOf(TypeScreen.HOME)
+                    }
+
+                    var bestScore by remember {
+                        mutableStateOf(0)
+                    }
 
                     if (currentScreen == TypeScreen.HOME) {
+
                         HomeScreen(
                             bestScore = bestScore,
-                            onClickInstruction = { currentScreen = TypeScreen.INSTRUCTION },
-                            onClickGame = { currentScreen = TypeScreen.GAME }
+                            onClickInstruction = {
+                                currentScreen = TypeScreen.INSTRUCTION
+                            },
+                            onClickGame = {
+                                currentScreen = TypeScreen.GAME
+                            }
                         )
+
                     } else if (currentScreen == TypeScreen.GAME) {
+
                         GameScreen(
-                            onBack = { score ->
+                            onBack = {
+                                currentScreen = TypeScreen.HOME
+                            },
+                            onGameWon = { score ->
+
                                 if (bestScore == 0 || score < bestScore) {
                                     bestScore = score
                                 }
 
-                                currentScreen = TypeScreen.HOME
-                            },
-                            onNewBestScore = { score ->
-                                if (bestScore == 0 || score < bestScore) {
-                                    bestScore = score
-                                }
                             }
                         )
+
                     } else if (currentScreen == TypeScreen.INSTRUCTION) {
+
                         InstructionScreen {
                             currentScreen = TypeScreen.HOME
                         }
