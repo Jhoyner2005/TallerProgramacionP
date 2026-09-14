@@ -173,6 +173,29 @@ fun GameScreen(
             // Hole
             drawCircle(color = Color.Black, radius = holeRadius, center = Offset(holeX, holeY))
 
+
+            // Flag pole
+            drawLine(
+                color = Color.White,
+                start = Offset(holeX, holeY),
+                end = Offset(holeX, holeY - 120f),
+                strokeWidth = 8f,
+                cap = StrokeCap.Round
+            )
+
+            // Flag
+            val flagPath = androidx.compose.ui.graphics.Path().apply {
+                moveTo(holeX, holeY - 120f)
+                lineTo(holeX + 70f, holeY - 95f)
+                lineTo(holeX, holeY - 70f)
+                close()
+            }
+
+            drawPath(
+                path = flagPath,
+                color = Color.Red
+            )
+
             if (isInitialized) {
                 if (!isMoving && !hasWon) {
                     val lineLength = 130f
