@@ -112,6 +112,34 @@ fun GameScreen(
                     ballVelX *= 0.95f
                     ballVelY *= 0.95f
 
+
+                    // Bounce off tree 1
+                    val tree1X = 115f
+                    val tree1Y = 400f
+                    val treeRadius = 60f
+
+                    val dx1 = ballX - tree1X
+                    val dy1 = ballY - tree1Y
+                    val distance1 = sqrt(dx1 * dx1 + dy1 * dy1)
+
+                    if (distance1 < ballRadius + treeRadius) {
+                        ballVelX = -ballVelX
+                        ballVelY = -ballVelY
+                    }
+
+                    // Bounce off tree 2
+                    val tree2X = canvasWidth - 115f
+                    val tree2Y = 670f
+
+                    val dx2 = ballX - tree2X
+                    val dy2 = ballY - tree2Y
+                    val distance2 = sqrt(dx2 * dx2 + dy2 * dy2)
+
+                    if (distance2 < ballRadius + treeRadius) {
+                        ballVelX = -ballVelX
+                        ballVelY = -ballVelY
+                    }
+
                     // bounce off walls
                     if (ballX - ballRadius <= 0f) {
                         ballX = ballRadius
@@ -194,6 +222,32 @@ fun GameScreen(
             drawPath(
                 path = flagPath,
                 color = Color.Red
+            )
+
+            // Árbol 1
+            drawRect(
+                color = Color(0xFF795548),
+                topLeft = Offset(100f, 430f),
+                size = androidx.compose.ui.geometry.Size(30f, 100f)
+            )
+
+            drawCircle(
+                color = Color(0xFF1B5E20),
+                radius = 60f,
+                center = Offset(115f, 400f)
+            )
+
+            // Árbol 2
+            drawRect(
+                color = Color(0xFF795548),
+                topLeft = Offset(size.width - 130f, 700f),
+                size = androidx.compose.ui.geometry.Size(30f, 100f)
+            )
+
+            drawCircle(
+                color = Color(0xFF1B5E20),
+                radius = 60f,
+                center = Offset(size.width - 115f, 670f)
             )
 
             if (isInitialized) {
