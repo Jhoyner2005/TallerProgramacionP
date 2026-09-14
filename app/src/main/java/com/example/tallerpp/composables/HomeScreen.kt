@@ -227,6 +227,27 @@ fun HomeScreen(
 
             Spacer(modifier = Modifier.height(10.dp))
 
+            // Instruction button
+            Button(
+                onClick = onClickInstruction,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(60.dp),
+                shape = RoundedCornerShape(30.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFFFFC107)
+                )
+            ) {
+
+                Text(
+                    text = "Instructions",
+                    fontSize = 21.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = Color(0xFF214D2F)
+                )
+            }
+
+
             Text(
                 text = "Golf Game • 2026",
                 color = Color.White.copy(alpha = 0.8f),
