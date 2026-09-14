@@ -180,6 +180,34 @@ fun GameScreen(
                         ballVelY = -ballVelY
                     }
 
+                    // Slow down in Lake 1
+                    val lake1X = 140f
+                    val lake1Y = canvasHeight * 0.40f + 50f
+                    val lake1Width = 100f
+                    val lake1Height = 50f
+
+                    val lake1Dx = (ballX - lake1X) / lake1Width
+                    val lake1Dy = (ballY - lake1Y) / lake1Height
+
+                    if (lake1Dx * lake1Dx + lake1Dy * lake1Dy < 1f) {
+                        ballVelX *= 0.7f
+                        ballVelY *= 0.7f
+                    }
+
+                    // Slow down in sand
+                    val sandX = canvasWidth / 2f
+                    val sandY = canvasHeight * 0.92f + 100f
+                    val sandWidth = 400f
+                    val sandHeight = 100f
+
+                    val sandDx = (ballX - sandX) / sandWidth
+                    val sandDy = (ballY - sandY) / sandHeight
+
+                    if (sandDx * sandDx + sandDy * sandDy < 1f) {
+                        ballVelX *= 0.7f
+                        ballVelY *= 0.7f
+                    }
+
                     // speed change
                     val currentSpeed = sqrt(ballVelX * ballVelX + ballVelY * ballVelY)
                     if (currentSpeed < 0.2f) {
@@ -281,11 +309,12 @@ fun GameScreen(
                     size = androidx.compose.ui.geometry.Size(220f, 100f)
                 )
 
-                // Lake 2
+
                 drawOval(
-                    color = Color(0xFF2196F3),
-                    topLeft = Offset(500f, size.height * 0.87f),
-                    size = androidx.compose.ui.geometry.Size(200f, 100f)
+                    color = Color(0xFFD7B98E),
+                    topLeft = Offset((size.width - 800f) / 2f, size.height * 0.92f
+                    ),
+                    size = androidx.compose.ui.geometry.Size(800f, 200f)
                 )
 
 
