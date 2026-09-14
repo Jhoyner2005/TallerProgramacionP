@@ -34,7 +34,7 @@ import kotlin.math.sqrt
 
 @Composable
 fun GameScreen(
-    onBack: () -> Unit
+    onBack: (Int) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -215,7 +215,7 @@ fun GameScreen(
         }
 
         Button(
-            onClick = { onBack() },
+            onClick = { onBack(strokeCount) },
             modifier = Modifier
                 .align(Alignment.TopStart)
                 .padding(16.dp)

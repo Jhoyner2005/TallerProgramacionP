@@ -27,6 +27,7 @@ import com.example.tallerpp.R
 
 @Composable
 fun HomeScreen(
+    bestScore: Int,
     onClickGame: () -> Unit
 ) {
 
@@ -132,7 +133,7 @@ fun HomeScreen(
                         )
 
                         Text(
-                            text = stringResource(R.string.home_score),
+                            text = if (bestScore == 0) "-" else "$bestScore",
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color(0xFF176B3A)

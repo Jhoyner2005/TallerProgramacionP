@@ -23,14 +23,20 @@ class MainActivity : ComponentActivity() {
         setContent {
             TallerPPTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+
                     var currentScreen by remember { mutableStateOf(TypeScreen.HOME) }
+                    var bestScore by remember { mutableStateOf(0) }
 
                     if (currentScreen == TypeScreen.HOME) {
-                        HomeScreen() {
+                        HomeScreen(bestScore = bestScore) {
                             currentScreen = TypeScreen.GAME
                         }
                     } else if (currentScreen == TypeScreen.GAME) {
-                        GameScreen() {
+                        GameScreen { score ->
+                            if (bestScore == 0 || score < bestScore) {
+                                bestScore = score
+                            }
+
                             currentScreen = TypeScreen.HOME
                         }
                     }
