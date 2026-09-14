@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -191,14 +193,25 @@ fun GameScreen(
             }
         }
 
-        Column(
+        Card(
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(16.dp),
-            horizontalAlignment = Alignment.End
+            shape = RoundedCornerShape(14.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color.Black.copy(alpha = 0.5f)
+            )
         ) {
-            Text(text = "Tiros: $strokeCount", color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold)
-
+            Text(
+                text = "Tiros: $strokeCount",
+                color = Color.White,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(
+                    horizontal = 16.dp,
+                    vertical = 10.dp
+                )
+            )
         }
 
         Button(
