@@ -112,7 +112,7 @@ fun GameScreen(
                     ballVelX *= 0.95f
                     ballVelY *= 0.95f
 
-                    // Rebotes en paredes
+                    // bounce off walls
                     if (ballX - ballRadius <= 0f) {
                         ballX = ballRadius
                         ballVelX = -ballVelX * 0.5f
@@ -130,7 +130,7 @@ fun GameScreen(
                         ballVelY = -ballVelY * 0.5f
                     }
 
-                    // cambio de velocidad
+                    // speed change
                     val currentSpeed = sqrt(ballVelX * ballVelX + ballVelY * ballVelY)
                     if (currentSpeed < 0.2f) {
                         ballVelX = 0f
@@ -138,7 +138,7 @@ fun GameScreen(
                         isMoving = false
                     }
 
-                    // Detectar entrada al Hoyo
+                    // Detect the entrance to the hole
                     val holeX = canvasWidth / 2f
                     val holeY = 250f
                     val dx = ballX - holeX
@@ -167,10 +167,10 @@ fun GameScreen(
             val holeX = size.width / 2f
             val holeY = 250f
 
-            // Campo de Golf
+            // Golf course
             drawRect(color = Color(0xFF2E7D32), size = size)
 
-            // Hoyo
+            // Hole
             drawCircle(color = Color.Black, radius = holeRadius, center = Offset(holeX, holeY))
 
             if (isInitialized) {
@@ -188,7 +188,7 @@ fun GameScreen(
                     )
                 }
 
-                // Pelota
+                // ball
                 drawCircle(color = Color.White, radius = ballRadius, center = Offset(ballX, ballY))
             }
         }
