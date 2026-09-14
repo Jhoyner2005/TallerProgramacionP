@@ -112,6 +112,23 @@ fun GameScreen(
                     ballVelX *= 0.95f
                     ballVelY *= 0.95f
 
+                    // bounce off walls
+                    if (ballX - ballRadius <= 0f) {
+                        ballX = ballRadius
+                        ballVelX = -ballVelX * 0.5f
+                    }
+                    if (ballX + ballRadius >= canvasWidth) {
+                        ballX = canvasWidth - ballRadius
+                        ballVelX = -ballVelX * 0.5f
+                    }
+                    if (ballY - ballRadius <= 0f) {
+                        ballY = ballRadius
+                        ballVelY = -ballVelY * 0.5f
+                    }
+                    if (ballY + ballRadius >= canvasHeight) {
+                        ballY = canvasHeight - ballRadius
+                        ballVelY = -ballVelY * 0.5f
+                    }
 
                     // Bounce off tree 1
                     val tree1X = 115f
@@ -138,24 +155,6 @@ fun GameScreen(
                     if (distance2 < ballRadius + treeRadius) {
                         ballVelX = -ballVelX
                         ballVelY = -ballVelY
-                    }
-
-                    // bounce off walls
-                    if (ballX - ballRadius <= 0f) {
-                        ballX = ballRadius
-                        ballVelX = -ballVelX * 0.5f
-                    }
-                    if (ballX + ballRadius >= canvasWidth) {
-                        ballX = canvasWidth - ballRadius
-                        ballVelX = -ballVelX * 0.5f
-                    }
-                    if (ballY - ballRadius <= 0f) {
-                        ballY = ballRadius
-                        ballVelY = -ballVelY * 0.5f
-                    }
-                    if (ballY + ballRadius >= canvasHeight) {
-                        ballY = canvasHeight - ballRadius
-                        ballVelY = -ballVelY * 0.5f
                     }
 
                     // speed change
@@ -223,33 +222,6 @@ fun GameScreen(
                 path = flagPath,
                 color = Color.Red
             )
-
-            // Árbol 1
-            drawRect(
-                color = Color(0xFF795548),
-                topLeft = Offset(100f, 430f),
-                size = androidx.compose.ui.geometry.Size(30f, 100f)
-            )
-
-            drawCircle(
-                color = Color(0xFF1B5E20),
-                radius = 60f,
-                center = Offset(115f, 400f)
-            )
-
-            // Árbol 2
-            drawRect(
-                color = Color(0xFF795548),
-                topLeft = Offset(size.width - 130f, 700f),
-                size = androidx.compose.ui.geometry.Size(30f, 100f)
-            )
-
-            drawCircle(
-                color = Color(0xFF1B5E20),
-                radius = 60f,
-                center = Offset(size.width - 115f, 670f)
-            )
-
             if (isInitialized) {
                 if (!isMoving && !hasWon) {
                     val lineLength = 130f
@@ -264,6 +236,32 @@ fun GameScreen(
                         cap = StrokeCap.Round
                     )
                 }
+
+                // tree 1
+                drawRect(
+                    color = Color(0xFF795548),
+                    topLeft = Offset(100f, 430f),
+                    size = androidx.compose.ui.geometry.Size(30f, 100f)
+                )
+
+                drawCircle(
+                    color = Color(0xFF1B5E20),
+                    radius = 60f,
+                    center = Offset(115f, 400f)
+                )
+
+                // tree 2
+                drawRect(
+                    color = Color(0xFF795548),
+                    topLeft = Offset(size.width - 130f, 700f),
+                    size = androidx.compose.ui.geometry.Size(30f, 100f)
+                )
+
+                drawCircle(
+                    color = Color(0xFF1B5E20),
+                    radius = 60f,
+                    center = Offset(size.width - 115f, 670f)
+                )
 
                 // ball
                 drawCircle(color = Color.White, radius = ballRadius, center = Offset(ballX, ballY))
