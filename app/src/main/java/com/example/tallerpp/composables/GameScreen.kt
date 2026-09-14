@@ -1,5 +1,5 @@
 package com.example.tallerpp.composables
-
+import kotlinx.coroutines.delay
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -57,9 +57,16 @@ fun GameScreen(
     var canvasHeight by remember { mutableFloatStateOf(0f) }
     var isInitialized by remember { mutableStateOf(false) }
     var hasWon by remember { mutableStateOf(false) }
+    var showHoleInfo by remember {
+        mutableStateOf(true)
+    }
 
     val ballRadius = 30f
     val holeRadius = 50f
+    LaunchedEffect(Unit) {
+        delay(1000)
+        showHoleInfo = false
+    }
 
     DisposableEffect(sensorManager) {
         val listener = object : SensorEventListener {
@@ -192,12 +199,15 @@ fun GameScreen(
 
 
     Box(modifier = Modifier.fillMaxSize()) {
+
         Canvas(modifier = Modifier.fillMaxSize()) {
             canvasWidth = size.width
             canvasHeight = size.height
 
             val holeX = size.width / 2f
             val holeY = 250f
+
+
 
             // Golf course
             drawRect(color = Color(0xFF2E7D32), size = size)
@@ -273,6 +283,30 @@ fun GameScreen(
             }
         }
 
+
+    if (showHoleInfo) {
+        Column(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(top = 20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "HOLE 1",
+                color = Color.White,
+                fontSize = 36.sp,
+                fontWeight = FontWeight.ExtraBold
+            )
+
+            Text(
+                text = "Dangerous Forest",
+                color = Color.White,
+                fontSize = 22.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+
         Card(
             modifier = Modifier
                 .align(Alignment.TopEnd)
@@ -328,9 +362,17 @@ fun GameScreen(
                     ) {
 
                         Text(
-                            text = "GREAT!",
+                            text = when (strokeCount) {
+                                1 -> "HOLE IN ONE!"
+                                2 -> "EAGLE!"
+                                3 -> "BIRDIE!"
+                                4 -> "PAR!"
+                                5 -> "BOGEY!"
+                                6 -> "DOUBLE BOGEY!"
+                                else -> "TRIPLE BOGEY!"
+                            },
                             color = Color(0xFFFFD54F),
-                            fontSize = 34.sp,
+                            fontSize = 30.sp,
                             fontWeight = FontWeight.ExtraBold
                         )
 
