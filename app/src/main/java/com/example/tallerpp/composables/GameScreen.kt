@@ -69,17 +69,17 @@ fun GameScreen(
 
                     if (!isMoving && !hasWon) {
                         val tiltMagnitude = sqrt(ax * ax + ay * ay)
-                        if (tiltMagnitude > 1.5f) {
+                        if (tiltMagnitude > 1.0f) {
                             aimAngle = atan2(ay.toDouble(), -ax.toDouble()).toFloat()
                         }
                     }
 
                     val magnitude = sqrt(ax * ax + ay * ay + az * az)
-                    if (magnitude > 16f && !isMoving && !hasWon) {
+                    if (magnitude > 15f && !isMoving && !hasWon) {
                         val force = magnitude - 9.81f
 
-                        ballVelX = cos(aimAngle.toDouble()).toFloat() * force * 2.2f
-                        ballVelY = sin(aimAngle.toDouble()).toFloat() * force * 2.2f
+                        ballVelX = cos(aimAngle.toDouble()).toFloat() * force * 3.2f
+                        ballVelY = sin(aimAngle.toDouble()).toFloat() * force * 3.2f
 
                         isMoving = true
                         strokeCount++
