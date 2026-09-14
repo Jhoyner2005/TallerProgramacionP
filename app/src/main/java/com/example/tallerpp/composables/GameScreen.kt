@@ -252,6 +252,14 @@ fun GameScreen(
                     )
                 }
 
+                // p stone
+                drawCircle(
+                    color = Color(0xFF757575),
+                    radius = 55f,
+                    center = Offset(size.width / 2f, size.height * 0.65f
+                    )
+                )
+
                 // tree 1
                 drawRect(
                     color = Color(0xFF795548),
