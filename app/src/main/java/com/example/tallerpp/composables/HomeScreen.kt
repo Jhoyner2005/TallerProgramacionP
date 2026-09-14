@@ -2,6 +2,7 @@
 package com.example.tallerpp.composables
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -28,7 +30,8 @@ import com.example.tallerpp.R
 @Composable
 fun HomeScreen(
     bestScore: Int,
-    onClickGame: () -> Unit
+    onClickGame: () -> Unit,
+    onClickInstruction: () -> Unit
 ) {
 
     Box(
@@ -181,6 +184,25 @@ fun HomeScreen(
                 color = Color.White.copy(alpha = 0.8f),
                 fontSize = 12.sp
             )
+
+            Button(
+                onClick = onClickInstruction,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+                    .shadow(6.dp, RoundedCornerShape(18.dp)),
+                shape = RoundedCornerShape(18.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.White.copy(alpha = 0.2f)
+                )
+            ){
+                Text(
+                    text = "Instructions",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                )
+            }
         }
     }
 }
