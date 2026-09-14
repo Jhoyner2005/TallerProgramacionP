@@ -203,7 +203,7 @@ fun GameScreen(
             )
         ) {
             Text(
-                text = "Tiros: $strokeCount",
+                text = "Shots: $strokeCount",
                 color = Color.White,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
@@ -223,7 +223,7 @@ fun GameScreen(
                 .height(44.dp)
                 .shadow(8.dp, RoundedCornerShape(14.dp)),
             shape = RoundedCornerShape(14.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00AEFF))
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Blue)
         ) {
             Text(text = stringResource(R.string.home_btn_back), fontSize = 14.sp, color = Color.White)
         }
