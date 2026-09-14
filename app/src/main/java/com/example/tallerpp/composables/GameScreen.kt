@@ -274,6 +274,21 @@ fun GameScreen(
                     )
                 )
 
+                // Lake
+                drawOval(
+                    color = Color(0xFF2196F3),
+                    topLeft = Offset(40f, size.height * 0.40f),
+                    size = androidx.compose.ui.geometry.Size(220f, 100f)
+                )
+
+                // Lake 2
+                drawOval(
+                    color = Color(0xFF2196F3),
+                    topLeft = Offset(500f, size.height * 0.87f),
+                    size = androidx.compose.ui.geometry.Size(200f, 100f)
+                )
+
+
                 // tree 1
                 drawRect(
                     color = Color(0xFF795548),
