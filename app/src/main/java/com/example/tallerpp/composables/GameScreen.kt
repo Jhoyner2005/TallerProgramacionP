@@ -350,6 +350,35 @@ fun GameScreen(
             )
         }
 
+        //Button reset
+        Button(
+            onClick = {
+                strokeCount = 0
+                hasWon = false
+                isMoving = false
+
+                ballVelX = 0f
+                ballVelY = 0f
+
+                isInitialized = false
+            },
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(top = 75.dp, end = 16.dp)
+                .height(40.dp),
+            shape = RoundedCornerShape(12.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Black.copy(alpha = 0.5f)
+            )
+        ) {
+            Text(
+                text = "RESTART",
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color.White
+            )
+        }
+
         Button(
             onClick = { onBack() },
             modifier = Modifier
@@ -361,7 +390,11 @@ fun GameScreen(
             shape = RoundedCornerShape(14.dp),
             colors = ButtonDefaults.buttonColors(containerColor = Color.Blue)
         ) {
-            Text(text = stringResource(R.string.home_btn_back), fontSize = 14.sp, color = Color.White)
+            Text(
+                text = stringResource(R.string.home_btn_back),
+                fontSize = 14.sp,
+                color = Color.White
+            )
         }
         if (hasWon) {
             Box(
