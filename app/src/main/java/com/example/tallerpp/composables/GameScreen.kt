@@ -217,7 +217,7 @@ fun GameScreen(
 
         if (hasWon) {
             Text(
-                text = "¡HOLE IN ONE! ⛳\nEn $strokeCount tiros",
+                text = "¡HOLE IN ONE! ⛳\nIn $strokeCount shots",
                 color = Color.Yellow,
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
