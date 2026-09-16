@@ -17,16 +17,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.tallerpp.R
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlin.math.atan2
 import kotlin.math.cos
@@ -268,7 +268,7 @@ fun GameScreen(
             )
 
             // Flag
-            val flagPath = androidx.compose.ui.graphics.Path().apply {
+            val flagPath = Path().apply {
                 moveTo(holeX, holeY - 120f)
                 lineTo(holeX + 70f, holeY - 95f)
                 lineTo(holeX, holeY - 70f)
@@ -279,6 +279,7 @@ fun GameScreen(
                 path = flagPath,
                 color = Color.Red
             )
+
             if (isInitialized) {
                 if (!isMoving && !hasWon) {
                     val lineLength = 130f
@@ -306,7 +307,7 @@ fun GameScreen(
                 drawOval(
                     color = Color(0xFF2196F3),
                     topLeft = Offset(40f, size.height * 0.40f),
-                    size = androidx.compose.ui.geometry.Size(220f, 100f)
+                    size = Size(220f, 100f)
                 )
 
 
